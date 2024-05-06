@@ -44,6 +44,14 @@ Markdown is transformed into nice-looking HTML.
     there may not be any data for the given date, so changing the date may resolve the issue.
     *******
 
+    To use the App, select a date, and search for the WS Bets top posts for that date with the search button.
+    If the search throws an alert, sometimes retrying will solve the issue, as the API connection is traffic dependent.
+    If it continues not to work, then there may not be data available for that date. Once the WS Bets data is acquired
+    for a date, select different tickers with the Combo Box and press the "Get Stock Data" button to get the stock
+    data for a specific ticker. You can then look at whether the Wall Street Bets prediction matches the actual stock
+    trend and determine whether the WS Bets is a useful investing tool for a specific ticker.
+
+
 > **Also, include the GitHub `https` URL to your repository.**
 
 https://github.com/jbb32104/cs1302-api-app
