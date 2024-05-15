@@ -2,36 +2,19 @@ package cs1302.api;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse.BodyHandlers;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /**
  * This app integrates the Wall Street Bets Reddit API and the Polygon
@@ -42,9 +25,12 @@ import com.google.gson.GsonBuilder;
  * different stocks based on the date they searched for and inspect the reddit
  * prediction and compare to the actual movement of the stock that day.
  *
- * The UI displays the Sentiment, which is the prediction of whether the stock will
- * be bearish (go down), or bullish (go up). It additionally displays the sentiment
- * score which is the strength prediction, where a higher magnitude means a stronger
+ * The UI displays the Sentiment, which is the prediction of whether the stock
+ * will
+ * be bearish (go down), or bullish (go up). It additionally displays the
+ * sentiment
+ * score which is the strength prediction, where a higher magnitude means a
+ * stronger
  * confidence.
  *
  * The Ticker is displayed to indicate the stock that is being displayed.
@@ -62,8 +48,6 @@ public class ApiApp extends Application {
     PolygonComponent stockContent;
     int wsQueries = 0;
 
-
-
     /**
      * This method Queries the WallStreetBets API based on the selected date in
      * the {@code DatePicker}. The method constructs a formatted URI to query
@@ -77,15 +61,15 @@ public class ApiApp extends Application {
         System.out.println(uri);
         Platform.runLater(() -> navBar.getSearchButton().setDisable(true));
         Task<Void> wsReqTask = new Task<>() {
-                @Override
-                protected Void call() throws IOException, IllegalArgumentException {
-                    wsResults = ApiMethods.makeWSReq(uri);
-                    if (wsResults.length == 0) {
-                        throw new IOException("No top Wall Street Bets posts for " + date);
-                    }
-                    return null;
-                } //call()
-            }; //wsReqTask
+            @Override
+            protected Void call() throws IOException, IllegalArgumentException {
+                wsResults = ApiMethods.makeWSReq(uri);
+                if (wsResults.length == 0) {
+                    throw new IOException("No top Wall Street Bets posts for " + date);
+                }
+                return null;
+            } // call()
+        }; // wsReqTask
         wsReqTask.setOnFailed(event -> {
             Throwable e = wsReqTask.getException();
             System.out.println(e);
@@ -104,22 +88,21 @@ public class ApiApp extends Application {
                 wsContent.setSentiment(wsResults[0].getSentiment());
                 wsContent.setSentimentScore(wsResults[0].getSentimentScore());
                 navBar.topTickers.getItems().clear();
-                for (WallStreetBetsResult result: wsResults) {
+                for (WallStreetBetsResult result : wsResults) {
                     navBar.addTopTicker(result.getTicker());
                 }
                 navBar.topTickers.setValue(wsResults[0].ticker);
                 polygonQuery();
-            }); //runLater
+            }); // runLater
 
-        }); //setOnSucceeded
+        }); // setOnSucceeded
 
         Thread wsQueryThread = new Thread(wsReqTask);
         wsQueryThread.setDaemon(true);
         System.out.println("WS Query Task started");
         wsQueryThread.start();
 
-    } //wsQuery
-
+    } // wsQuery
 
     /**
      * Method to query the polygon API and update all UI elements accordingly.
@@ -128,7 +111,8 @@ public class ApiApp extends Application {
      * If an Exception is thrown during the task, an alert pops up and lets
      * the user know that there is an error.
      * This query is for the Polygon API and can modify the Stock Component UI
-     * and the Wall Street Bets UI depending on the selection of the {@code ComboBox}.
+     * and the Wall Street Bets UI depending on the selection of the
+     * {@code ComboBox}.
      */
     public void polygonQuery() {
         Platform.runLater(() -> disableButton(navBar.getStockPriceButton(), 6));
@@ -148,36 +132,36 @@ public class ApiApp extends Application {
         polygonReqTask.setOnSucceeded((event) -> {
             double dayChange = stockResult.getClose() - stockResult.getOpen();
             Platform.runLater(() -> {
-                for (WallStreetBetsResult result: wsResults) {
+                for (WallStreetBetsResult result : wsResults) {
                     if (ticker.equalsIgnoreCase(result.ticker)) {
                         wsContent.setTicker(result.getTicker());
                         wsContent.setNumComments(result.getNumComments());
                         wsContent.setSentiment(result.getSentiment());
                         wsContent.setSentimentScore(result.getSentimentScore());
-                    } //if
-                } //for
+                    } // if
+                } // for
                 disableButton(navBar.getSearchButton(), 6);
                 disableButton(navBar.getStockPriceButton(), 6);
                 stockContent.setOpen(stockResult.getOpen());
                 stockContent.setClose(stockResult.getClose());
                 stockContent.setTicker(ticker);
                 stockContent.dayChange(dayChange);
-            }); //runLater
-            //case if stock goes down and prediction is bearish
-            for (WallStreetBetsResult result: wsResults) {
+            }); // runLater
+            // case if stock goes down and prediction is bearish
+            for (WallStreetBetsResult result : wsResults) {
                 if (result.ticker.equals(ticker)) {
                     if (dayChange < 0 && result.getSentiment().equalsIgnoreCase("Bearish") ||
-                        dayChange > 0 && result.getSentiment().equalsIgnoreCase("Bullish")) {
+                            dayChange > 0 && result.getSentiment().equalsIgnoreCase("Bullish")) {
                         Platform.runLater(() -> {
                             stockContent.setMatchesSentiment("YES");
-                        }); //runLater
+                        }); // runLater
                     } else {
                         Platform.runLater(() -> {
                             stockContent.setMatchesSentiment("NO");
-                        }); //runLater
-                    } //else
+                        }); // runLater
+                    } // else
 
-                } //for
+                } // for
             }
         });
         polygonReqTask.setOnFailed(event -> {
@@ -192,20 +176,20 @@ public class ApiApp extends Application {
 
     /**
      * Method to disable the given button for the given duration.
+     * 
      * @param seconds the duration to disable for.
-     * @param button the button object to disable.
+     * @param button  the button object to disable.
      */
     private static void disableButton(Button button, int seconds) {
         Timeline timeline = new Timeline(
-            new KeyFrame(Duration.ZERO, e -> button.setDisable(true)),
-            new KeyFrame(Duration.seconds(seconds), e -> button.setDisable(false))
-            );
+                new KeyFrame(Duration.ZERO, e -> button.setDisable(true)),
+                new KeyFrame(Duration.seconds(seconds), e -> button.setDisable(false)));
         timeline.play();
     }
 
-
     /**
      * Method to alert the user when an exception is thrown.
+     * 
      * @param cause the Throwable object of the cause.
      */
     private void alert(Throwable cause) {

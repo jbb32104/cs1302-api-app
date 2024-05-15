@@ -2,9 +2,6 @@ package cs1302.api;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.text.Font;
@@ -23,8 +20,6 @@ public class WallStreetComponent extends HBox {
     Text sentiment;
     Text sentimentScore;
 
-
-
     /**
      * Constructor for the WallStreetComponent object.
      * Contains a forward and back arrow with a content
@@ -33,7 +28,7 @@ public class WallStreetComponent extends HBox {
      */
     public WallStreetComponent() {
         super(10);
-        //setting alignment and position
+        // setting alignment and position
         this.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(8));
 
@@ -41,17 +36,17 @@ public class WallStreetComponent extends HBox {
         content.setPrefWidth(400);
         content.setPadding(new Insets(10, 10, 10, 70));
 
-        //setting fonts of Text elements
-        ticker = new Text(         "Ticker:          ");
+        // setting fonts of Text elements
+        ticker = new Text("Ticker:          ");
         ticker.setFill(Color.BLUE);
         ticker.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        numComments = new Text(    "# of comments:   ");
+        numComments = new Text("# of comments:   ");
         numComments.setFill(Color.GREEN);
         numComments.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        sentiment = new Text(      "Sentiment:       ");
+        sentiment = new Text("Sentiment:       ");
         sentiment.setFill(Color.PURPLE);
         sentiment.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        sentimentScore = new Text( "Sentiment Score: ");
+        sentimentScore = new Text("Sentiment Score: ");
         sentimentScore.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         sentimentScore.setFill(Color.ORANGE);
 
@@ -63,6 +58,7 @@ public class WallStreetComponent extends HBox {
 
     /**
      * Method to set the text for the ticker given the parameter.
+     * 
      * @param ticker the String to set the ticker to.
      */
     public void setTicker(String ticker) {
@@ -71,8 +67,9 @@ public class WallStreetComponent extends HBox {
 
     /**
      * Method to set the num comments text given the parameter.
+     * 
      * @param numComments the integer number of comments to set
-     * the text to.
+     *                    the text to.
      */
     public void setNumComments(int numComments) {
         this.numComments.setText("# of comments:       " + Integer.toString(numComments));
@@ -80,6 +77,7 @@ public class WallStreetComponent extends HBox {
 
     /**
      * Method to set the sentiment text given the parameter.
+     * 
      * @param sentiment the sentiment to set the text to.
      */
     public void setSentiment(String sentiment) {
@@ -88,6 +86,7 @@ public class WallStreetComponent extends HBox {
 
     /**
      * Method to set the Sentiment Score text given the parameter.
+     * 
      * @param sentimentScore the double sentiment score to set the text to.
      */
     public void setSentimentScore(double sentimentScore) {

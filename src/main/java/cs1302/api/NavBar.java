@@ -10,11 +10,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import java.util.List;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -30,8 +28,6 @@ public class NavBar extends HBox {
     Text topTickersText;
     ComboBox<String> topTickers;
 
-
-
     /**
      * NavBar constructor method.
      */
@@ -41,13 +37,12 @@ public class NavBar extends HBox {
         this.setPadding(new Insets(5));
 
         datePicker = new DatePicker();
-        //set the Callback to make all of the Weekend DateCells disabled and red.
+        // set the Callback to make all of the Weekend DateCells disabled and red.
         Callback<DatePicker, DateCell> weekendCellFactory = this.weekendCellFactory();
         datePicker.setDayCellFactory(weekendCellFactory);
-        //date formatting to (yyyy-MM-dd)
+        // date formatting to (yyyy-MM-dd)
         this.setDatePickerConverter();
         datePicker.setPromptText("yyyy-MM-dd");
-
 
         searchButton = new Button("Search");
         searchButton.setPrefWidth(80);
@@ -62,39 +57,38 @@ public class NavBar extends HBox {
         topTickers = new ComboBox<String>();
         topTickers.setPrefWidth(100);
         this.getChildren().addAll(selectDate, datePicker,
-            searchButton, stockPriceButton, topTickersText, topTickers);
-    } //NavBar()
-
+                searchButton, stockPriceButton, topTickersText, topTickers);
+    } // NavBar()
 
     /**
      * Functional interface override to set all of the
      * weekends to red boxes since the market is closed.
+     * 
      * @return the {@code Callback<DatePicker, DateCell>} that
-     * will be used in the DatePicker factory.
-     * This method will essentially modify all of the DateCells
-     * that are weekends and that are later than two years ago.
-     * This method overrides the updateItem method in the
-     * {@code DateCell} and checks whether the date is a
-     * weekend, is later than yesterday, or is more than two
-     * years ago.
+     *         will be used in the DatePicker factory.
+     *         This method will essentially modify all of the DateCells
+     *         that are weekends and that are later than two years ago.
+     *         This method overrides the updateItem method in the
+     *         {@code DateCell} and checks whether the date is a
+     *         weekend, is later than yesterday, or is more than two
+     *         years ago.
      */
     private Callback<DatePicker, DateCell> weekendCellFactory() {
         return datePicker -> new DateCell() {
-                @Override
-                public void updateItem(LocalDate item, boolean empty) {
-                    super.updateItem(item, empty);
-                    // Disable weekends (Saturday and Sunday)
-                    if (
-                        item.getDayOfWeek() == DayOfWeek.SATURDAY ||
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                // Disable weekends (Saturday and Sunday)
+                if (item.getDayOfWeek() == DayOfWeek.SATURDAY ||
                         item.getDayOfWeek() == DayOfWeek.SUNDAY ||
                         item.getYear() < 2022 ||
                         item.isAfter(LocalDate.now().plusDays(-1))) {
-                        setDisable(true);
-                        setStyle("-fx-background-color: red;");
-                    } //if
-                } //updateItem
-            }; //datePicker
-    } //weekendCellFactory
+                    setDisable(true);
+                    setStyle("-fx-background-color: red;");
+                } // if
+            } // updateItem
+        }; // datePicker
+    } // weekendCellFactory
 
     /**
      * Method to set the converter of the DatePicker instance
@@ -105,29 +99,30 @@ public class NavBar extends HBox {
      */
     private void setDatePickerConverter() {
         datePicker.setConverter(new StringConverter<LocalDate>() {
-                @Override
-                public String toString(LocalDate date) {
-                    if (date != null) {
-                        return dateFormatter.format(date);
-                    } else {
-                        return "";
-                    } //else
-                } //toString
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                } // else
+            } // toString
 
-                @Override
-                public LocalDate fromString(String string) {
-                    if (string != null && !string.isEmpty()) {
-                        return LocalDate.parse(string, dateFormatter);
-                    } else {
-                        return null;
-                    }
-                } //fromString
-            }); //setConverter
-    } //setDatePickerConverter
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            } // fromString
+        }); // setConverter
+    } // setDatePickerConverter
 
     /**
      * Method to format the date from the value of the
      * date picker into the form yyyy-MM-dd.
+     * 
      * @return the formatted date String.
      * @throws IllegalArgumentException if date can't be retrieved.
      */
@@ -140,10 +135,11 @@ public class NavBar extends HBox {
         } catch (Exception e) {
             throw new IllegalArgumentException("Please enter a Valid date");
         }
-    } //getDate
+    } // getDate
 
     /**
      * Method to get the searchButton instance variable.
+     * 
      * @return the search button.
      */
     public Button getSearchButton() {
@@ -152,15 +148,16 @@ public class NavBar extends HBox {
 
     /**
      * Getter method for the Stock Price button.
+     * 
      * @return the stock price button.
      */
     public Button getStockPriceButton() {
         return this.stockPriceButton;
     }
 
-
     /**
      * Method to add a ticker to the ComboBox.
+     * 
      * @param ticker the String to add.
      */
     public void addTopTicker(String ticker) {
@@ -169,9 +166,10 @@ public class NavBar extends HBox {
 
     /**
      * Method to get the highlighted ticker.
+     * 
      * @return the highlighted ticker.
      */
     public String getSelectedTicker() {
         return topTickers.getValue();
     }
-} //NavBar
+} // NavBar

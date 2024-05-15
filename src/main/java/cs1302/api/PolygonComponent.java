@@ -7,7 +7,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.paint.Color;
 
 /**
  * Represents the Polygon Component that stores the
@@ -20,7 +19,6 @@ public class PolygonComponent extends HBox {
     Text dayChange;
     Text matchesSentiment;
     VBox content;
-
 
     /**
      * Constructor for a {@code PolygonComponent}.
@@ -47,8 +45,9 @@ public class PolygonComponent extends HBox {
         this.getChildren().addAll(content);
     }
 
-     /**
+    /**
      * Method to set the text for the market open given the parameter.
+     * 
      * @param open the double to set the ticker to.
      */
     public void setOpen(double open) {
@@ -57,6 +56,7 @@ public class PolygonComponent extends HBox {
 
     /**
      * Method to set the close market value given the parameter.
+     * 
      * @param close the double representing the close market value.
      */
     public void setClose(double close) {
@@ -65,6 +65,7 @@ public class PolygonComponent extends HBox {
 
     /**
      * Method to set the day change text given the parameter.
+     * 
      * @param dayChange the double representing the day change.
      */
     public void dayChange(double dayChange) {
@@ -73,6 +74,7 @@ public class PolygonComponent extends HBox {
 
     /**
      * Setter method for the matchesSentiment text.
+     * 
      * @param statement the statement to set the Matches Sentiment to.
      */
     public void setMatchesSentiment(String statement) {
@@ -81,6 +83,7 @@ public class PolygonComponent extends HBox {
 
     /**
      * Method to set the ticker Text given the parameter.
+     * 
      * @param ticker the ticker to set in the text.
      */
     public void setTicker(String ticker) {
