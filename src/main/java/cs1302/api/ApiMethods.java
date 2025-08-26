@@ -108,14 +108,15 @@ public class ApiMethods {
      * @return the {@code URI} to the API based on the specified parameters.
      * @throws IllegalArgumentException if the URI can't be created.
      */
-    public static URI formatStockUri(String ticker, String date)
+    public static URI formatStockUri(String ticker, String date, String apiKey)
             throws IllegalArgumentException {
         try {
             String uriString = "https://api.polygon.io/v1/open-close/";
             uriString += URLEncoder.encode(ticker, "UTF-8") + "/";
             uriString += URLEncoder.encode(date, "UTF-8");
             ;
-            uriString += "?adjusted=true&apiKey=XtQnwq6TjekrGAMmwe8kjeAouVR5iVLA";
+            uriString += "?adjusted=true&apiKey=";
+            uriString += apiKey;
             URI uri = new URI(uriString);
             return uri;
         } catch (Exception e) {
